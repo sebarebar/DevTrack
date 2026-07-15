@@ -1,16 +1,25 @@
 import pg from 'pg';
+import dotenv from 'dotenv';
+dotenv.config();
+
 const { Pool } = pg;
-const pool = new Pool();
 
-console.log('starting async query');
-const result = await pool.query('SELECT NOW()');
-console.log('async query finished');
-
-console.log('starting callback query');
-pool.query('SELECT NOW()', (err, res) => {
-  console.log('callback query finished');
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  ssl: false,
 });
 
-console.log('calling end');
-await pool.end();
-console.log('pool has drained');
+pool.connect((err, client, done) => {
+  if (err) {
+    console.error('Error de conexión:', err.message);
+  } else {
+    console.log('¡Conexión a la base de datos establecida correctamente!');
+    client.release();
+  }
+});
+
+export default pool;
