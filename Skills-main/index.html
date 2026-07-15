@@ -3,289 +3,405 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevTrack — Skills</title>
+  <title>DevTrack — Skills & Proyectos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="min-h-screen" style="background:#070d1a;font-family:'Inter',system-ui,sans-serif;color:#e8f0fe;">
+<body style="background:#070d1a;font-family:'Inter',system-ui,sans-serif;color:#e8f0fe;min-height:100vh;">
 
-  <div class="max-w-6xl mx-auto px-6 py-8">
+  <div class="max-w-5xl mx-auto px-6 py-10">
 
-    <!-- PAGE HEADER -->
-    <div class="mb-6">
-      <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#3b82f6;letter-spacing:.12em;">Tecnologías</p>
-      <h1 class="text-2xl font-extrabold tracking-tight mb-1" style="letter-spacing:-.02em;">Skills</h1>
-      <p class="text-sm leading-relaxed max-w-sm" style="color:#7a95b8;">
-        Registra las tecnologías que dominas, organizadas por categoría y mide tu progreso con horas reales de práctica.
-      </p>
-    </div>
+    <!-- ══════════════════════════════════════
+         SECCIÓN HABILIDADES
+    ══════════════════════════════════════ -->
+    <section id="section-skills" class="mb-16">
 
-    <!-- ADD SKILL FORM -->
-    <div class="rounded-xl border mb-5 px-5 py-4" style="background:#0c1526;border-color:#1a2d48;">
-      <p class="text-sm font-semibold mb-0.5">Agregar nueva skill</p>
-      <p class="text-xs mb-4" style="color:#3d5470;">Completa los campos para añadirla a tu perfil</p>
-      <form id="skill-form" class="flex flex-wrap gap-3 items-end">
-        <!-- Nombre -->
-        <div class="flex flex-col gap-1 flex-1 min-w-[160px]">
-          <label class="text-xs font-medium" style="color:#7a95b8;">Nombre</label>
-          <input name="sname" type="text" placeholder="Ej. TypeScript" required
-            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors"
-            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
-            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+      <!-- Header de sección -->
+      <div class="section-header">
+        <h2 class="section-title">Habilidades</h2>
+        <p class="section-sub">Registra las tecnologías que dominas y mide tu progreso.</p>
+      </div>
+
+      <!-- Barra de controles: filtros + búsqueda -->
+      <div class="controls-bar">
+        <div class="pills-wrap">
+          <button class="fpill active" onclick="setFilter('Todos',this)">Todos</button>
+          <button class="fpill" onclick="setFilter('Frontend',this)">Frontend</button>
+          <button class="fpill" onclick="setFilter('Backend',this)">Backend</button>
+          <button class="fpill" onclick="setFilter('DevOps',this)">DevOps</button>
+          <button class="fpill" onclick="setFilter('Data',this)">Data</button>
+          <button class="fpill" onclick="setFilter('Mobile',this)">Mobile</button>
         </div>
-        <!-- Categoría -->
-        <div class="flex flex-col gap-1" style="width:140px;">
-          <label class="text-xs font-medium" style="color:#7a95b8;">Categoría</label>
-          <select name="scategory"
-            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors cursor-pointer appearance-none"
-            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
-            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
-            <option value="Frontend">Frontend</option>
-            <option value="Backend">Backend</option>
-            <option value="DevOps">DevOps</option>
-            <option value="Data">Data</option>
-            <option value="Mobile">Mobile</option>
-          </select>
-        </div>
-        <!-- Nivel -->
-        <div class="flex flex-col gap-1" style="width:120px;">
-          <label class="text-xs font-medium" style="color:#7a95b8;">Nivel</label>
-          <select name="slevel"
-            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors cursor-pointer appearance-none"
-            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
-            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
-            <option value="1">Nivel 1</option>
-            <option value="2">Nivel 2</option>
-            <option value="3" selected>Nivel 3</option>
-            <option value="4">Nivel 4</option>
-            <option value="5">Nivel 5</option>
-          </select>
-        </div>
-        <!-- Horas -->
-        <div class="flex flex-col gap-1" style="width:100px;">
-          <label class="text-xs font-medium" style="color:#7a95b8;">Horas</label>
-          <input name="shours" type="number" placeholder="120" min="0"
-            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors"
-            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
-            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
-        </div>
-        <!-- Submit -->
-        <button type="submit"
-          class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors"
-          style="background:#3b82f6;border:1px solid #3b82f6;align-self:flex-end;"
-          onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
-          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+        <div class="search-wrap">
+          <svg class="search-icon" width="13" height="13" fill="none" stroke="#3d5470" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
           </svg>
-          Agregar
+          <input id="search" type="text" placeholder="Buscar habilidad..."
+            class="search-input"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+        </div>
+      </div>
+
+      <!-- Grid de habilidades -->
+      <div id="skills-grid" class="skills-grid">
+
+        <!-- JavaScript -->
+        <div class="big-card" data-cat="Frontend" data-kw="javascript frontend">
+          <div class="bc-badge" style="background:#f59e0b;color:#fff;">Nv 5</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#1c2d10 0%,#1a2d1a 100%);">
+            <img src="https://cdn.simpleicons.org/javascript/f7df1e" width="42" height="42" alt="JavaScript" />
+          </div>
+          <p class="bc-name">JavaScript</p>
+          <span class="bc-cat-tag" style="color:#60a5fa;background:#1a2d48;">FRONTEND</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:95%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div>
+            </div>
+            <span class="bc-pct">95%</span>
+          </div>
+          <p class="bc-hours">329h practicadas</p>
+        </div>
+
+        <!-- React -->
+        <div class="big-card" data-cat="Frontend" data-kw="react frontend">
+          <div class="bc-badge" style="background:#64748b;color:#e2e8f0;">Nv 4</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#061a26 0%,#0c2233 100%);">
+            <img src="https://cdn.simpleicons.org/react/61dafb" width="42" height="42" alt="React" />
+          </div>
+          <p class="bc-name">React</p>
+          <span class="bc-cat-tag" style="color:#60a5fa;background:#1a2d48;">FRONTEND</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div>
+            </div>
+            <span class="bc-pct">80%</span>
+          </div>
+          <p class="bc-hours">218h practicadas</p>
+        </div>
+
+        <!-- Python -->
+        <div class="big-card" data-cat="Data" data-kw="python data">
+          <div class="bc-badge" style="background:#f59e0b;color:#fff;">Nv 3</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#1a1a2e 0%,#1a1530 100%);">
+            <img src="https://cdn.simpleicons.org/python/ffffff" width="42" height="42" alt="Python" />
+          </div>
+          <p class="bc-name">Python</p>
+          <span class="bc-cat-tag" style="color:#a78bfa;background:#1e1535;">DATA</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:60%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div>
+            </div>
+            <span class="bc-pct">60%</span>
+          </div>
+          <p class="bc-hours">98h practicadas</p>
+        </div>
+
+        <!-- TypeScript -->
+        <div class="big-card" data-cat="Frontend" data-kw="typescript frontend">
+          <div class="bc-badge" style="background:#f59e0b;color:#fff;">Nv 4</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#0d1f3c 0%,#0a1a38 100%);">
+            <img src="https://cdn.simpleicons.org/typescript/3178c6" width="40" height="40" alt="TypeScript" />
+          </div>
+          <p class="bc-name">TypeScript</p>
+          <span class="bc-cat-tag" style="color:#60a5fa;background:#1a2d48;">FRONTEND</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div>
+            </div>
+            <span class="bc-pct">80%</span>
+          </div>
+          <p class="bc-hours">175h practicadas</p>
+        </div>
+
+        <!-- Node.js -->
+        <div class="big-card" data-cat="Backend" data-kw="node.js nodejs backend">
+          <div class="bc-badge" style="background:#64748b;color:#e2e8f0;">Nv 3</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#0d2416 0%,#0a1f12 100%);">
+            <img src="https://cdn.simpleicons.org/nodedotjs/4ade80" width="42" height="42" alt="Node.js" />
+          </div>
+          <p class="bc-name">Node.js</p>
+          <span class="bc-cat-tag" style="color:#34d399;background:#0d2316;">BACKEND</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:65%;background:linear-gradient(90deg,#10b981,#34d399)"></div>
+            </div>
+            <span class="bc-pct">65%</span>
+          </div>
+          <p class="bc-hours">120h practicadas</p>
+        </div>
+
+        <!-- Docker -->
+        <div class="big-card" data-cat="DevOps" data-kw="docker devops">
+          <div class="bc-badge" style="background:#64748b;color:#e2e8f0;">Nv 2</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#071d2e 0%,#061826 100%);">
+            <img src="https://cdn.simpleicons.org/docker/2496ed" width="44" height="44" alt="Docker" />
+          </div>
+          <p class="bc-name">Docker</p>
+          <span class="bc-cat-tag" style="color:#fbbf24;background:#1f1708;">DEVOPS</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:40%;background:linear-gradient(90deg,#f59e0b,#fcd34d)"></div>
+            </div>
+            <span class="bc-pct">40%</span>
+          </div>
+          <p class="bc-hours">45h practicadas</p>
+        </div>
+
+        <!-- PostgreSQL -->
+        <div class="big-card" data-cat="Data" data-kw="postgresql postgres data">
+          <div class="bc-badge" style="background:#64748b;color:#e2e8f0;">Nv 3</div>
+          <div class="bc-icon-wrap" style="background:linear-gradient(135deg,#0d1f40 0%,#081730 100%);">
+            <img src="https://cdn.simpleicons.org/postgresql/4169e1" width="42" height="42" alt="PostgreSQL" />
+          </div>
+          <p class="bc-name">PostgreSQL</p>
+          <span class="bc-cat-tag" style="color:#a78bfa;background:#1e1535;">DATA</span>
+          <div class="bc-track-wrap">
+            <div class="bc-track">
+              <div class="bc-fill" style="width:60%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div>
+            </div>
+            <span class="bc-pct">60%</span>
+          </div>
+          <p class="bc-hours">90h practicadas</p>
+        </div>
+
+        <!-- Tarjeta Añadir habilidad -->
+        <div class="big-card big-card--add" id="btn-open-skill-modal">
+          <svg width="28" height="28" fill="none" stroke="#3d5470" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4"/>
+          </svg>
+          <p class="bc-add-label">Añadir habilidad</p>
+        </div>
+
+        <!-- Empty state -->
+        <div id="skills-empty" class="hidden col-span-full text-center py-14" style="color:#3d5470;">
+          <svg class="mx-auto mb-3 opacity-30" width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-sm">No se encontraron habilidades con ese filtro.</p>
+        </div>
+
+      </div><!-- /skills-grid -->
+    </section>
+
+
+    <!-- ══════════════════════════════════════
+         SECCIÓN PROYECTOS
+    ══════════════════════════════════════ -->
+    <section id="section-projects">
+
+      <div class="section-header">
+        <h2 class="section-title">Proyectos</h2>
+        <p class="section-sub">Seguimiento de tus proyectos activos y completados.</p>
+      </div>
+
+      <div class="projects-layout">
+
+        <!-- Lista de proyectos -->
+        <div class="projects-list" id="projects-list">
+
+          <!-- React -->
+          <div class="proj-card" data-status="En progreso">
+            <div class="proj-icon-wrap" style="background:linear-gradient(135deg,#061a26,#0c2233);">
+              <img src="https://cdn.simpleicons.org/react/61dafb" width="28" height="28" alt="React" />
+            </div>
+            <div class="proj-info">
+              <p class="proj-name">React</p>
+              <p class="proj-desc">Proyecto de aprendizaje y dominio del framework de UI</p>
+              <span class="proj-badge badge-progress">En progreso</span>
+            </div>
+          </div>
+
+          <!-- Node Config -->
+          <div class="proj-card" data-status="Completado">
+            <div class="proj-icon-wrap" style="background:linear-gradient(135deg,#0d2416,#0a1f12);">
+              <img src="https://cdn.simpleicons.org/nodedotjs/4ade80" width="28" height="28" alt="Node.js" />
+            </div>
+            <div class="proj-info">
+              <p class="proj-name">Node Config</p>
+              <p class="proj-desc">Configuración avanzada y automatización del entorno</p>
+              <span class="proj-badge badge-done">Completado</span>
+            </div>
+          </div>
+
+          <!-- TypeScript API -->
+          <div class="proj-card" data-status="Completado">
+            <div class="proj-icon-wrap" style="background:linear-gradient(135deg,#0d1f3c,#0a1a38);">
+              <img src="https://cdn.simpleicons.org/typescript/3178c6" width="27" height="27" alt="TypeScript" />
+            </div>
+            <div class="proj-info">
+              <p class="proj-name">TypeScript API</p>
+              <p class="proj-desc">REST API con tipado estricto y validaciones robustas</p>
+              <span class="proj-badge badge-done">Completado</span>
+            </div>
+          </div>
+
+          <!-- Python Dashboard -->
+          <div class="proj-card" data-status="En progreso">
+            <div class="proj-icon-wrap" style="background:linear-gradient(135deg,#1a1a2e,#1a1530);">
+              <img src="https://cdn.simpleicons.org/python/ffffff" width="27" height="27" alt="Python" />
+            </div>
+            <div class="proj-info">
+              <p class="proj-name">Python Dashboard</p>
+              <p class="proj-desc">Visualización de datos y métricas con Python</p>
+              <span class="proj-badge badge-progress">En progreso</span>
+            </div>
+          </div>
+
+          <!-- Docker Setup -->
+          <div class="proj-card" data-status="Pendiente">
+            <div class="proj-icon-wrap" style="background:linear-gradient(135deg,#071d2e,#061826);">
+              <img src="https://cdn.simpleicons.org/docker/2496ed" width="30" height="30" alt="Docker" />
+            </div>
+            <div class="proj-info">
+              <p class="proj-name">Docker Setup</p>
+              <p class="proj-desc">Contenedorización y orquestación de microservicios</p>
+              <span class="proj-badge badge-pending">Pendiente</span>
+            </div>
+          </div>
+
+          <!-- Empty state proyectos -->
+          <div id="projects-empty" class="hidden text-center py-10" style="color:#3d5470;">
+            <p class="text-sm">No hay proyectos registrados aún.</p>
+          </div>
+
+        </div><!-- /projects-list -->
+
+        <!-- Panel lateral: Añadir proyecto -->
+        <div class="proj-add-panel" id="btn-open-proj-modal">
+          <svg width="20" height="20" fill="none" stroke="#3d5470" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span class="proj-add-label">Añadir proyecto</span>
+        </div>
+
+      </div><!-- /projects-layout -->
+    </section>
+
+  </div><!-- /max-w -->
+
+
+  <!-- ══════════════════════════════════════
+       MODAL: Agregar habilidad
+  ══════════════════════════════════════ -->
+  <div id="modal-skill" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <p class="modal-title">Agregar habilidad</p>
+        <button class="modal-close" onclick="closeModal('modal-skill')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
         </button>
+      </div>
+      <form id="skill-form" class="modal-form">
+        <div class="field-group">
+          <label class="field-label">Nombre</label>
+          <input name="sname" type="text" placeholder="Ej. TypeScript" required class="field-input"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Categoría</label>
+            <select name="scategory" class="field-input"
+              onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
+              <option value="Frontend">Frontend</option>
+              <option value="Backend">Backend</option>
+              <option value="DevOps">DevOps</option>
+              <option value="Data">Data</option>
+              <option value="Mobile">Mobile</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Nivel</label>
+            <select name="slevel" class="field-input"
+              onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
+              <option value="1">Nivel 1</option>
+              <option value="2">Nivel 2</option>
+              <option value="3" selected>Nivel 3</option>
+              <option value="4">Nivel 4</option>
+              <option value="5">Nivel 5</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Horas</label>
+            <input name="shours" type="number" placeholder="120" min="0" class="field-input"
+              onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal('modal-skill')">Cancelar</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            </svg>
+            Agregar
+          </button>
+        </div>
       </form>
     </div>
+  </div>
 
-    <!-- FILTER BAR -->
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-      <!-- Pills -->
-      <div class="flex items-center gap-1 p-1 rounded-lg" style="background:#0c1526;border:1px solid #1a2d48;">
-        <button class="fpill active" onclick="setFilter('Todos',this)">Todos</button>
-        <button class="fpill" onclick="setFilter('Frontend',this)">Frontend</button>
-        <button class="fpill" onclick="setFilter('Backend',this)">Backend</button>
-        <button class="fpill" onclick="setFilter('DevOps',this)">DevOps</button>
-        <button class="fpill" onclick="setFilter('Data',this)">Data</button>
-        <button class="fpill" onclick="setFilter('Mobile',this)">Mobile</button>
+
+  <!-- ══════════════════════════════════════
+       MODAL: Agregar proyecto
+  ══════════════════════════════════════ -->
+  <div id="modal-project" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <p class="modal-title">Agregar proyecto</p>
+        <button class="modal-close" onclick="closeModal('modal-project')">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
-      <!-- Search -->
-      <div class="relative">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="13" height="13"
-          fill="none" stroke="#3d5470" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
-        </svg>
-        <input id="search" type="text" placeholder="Buscar skill..."
-          class="rounded-lg pl-8 pr-4 py-2 text-xs outline-none transition-colors"
-          style="background:#0c1526;border:1px solid #1a2d48;color:#e8f0fe;width:190px;"
-          onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
-      </div>
-    </div>
-
-    <!-- SKILLS GRID -->
-    <div id="skills-grid" class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(185px,1fr));">
-
-      <!-- JavaScript -->
-      <div class="skill-card" data-cat="Frontend" data-kw="javascript frontend">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">
-            <img src="https://cdn.simpleicons.org/javascript/ffffff" width="20" height="20" alt="JavaScript" />
+      <form id="project-form" class="modal-form">
+        <div class="field-group">
+          <label class="field-label">Nombre del proyecto</label>
+          <input name="pname" type="text" placeholder="Ej. Node Config" required class="field-input"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Descripción</label>
+          <input name="pdesc" type="text" placeholder="Breve descripción del proyecto" class="field-input"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Tecnología</label>
+            <select name="ptech" class="field-input"
+              onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
+              <option value="react">React</option>
+              <option value="nodedotjs">Node.js</option>
+              <option value="typescript">TypeScript</option>
+              <option value="python">Python</option>
+              <option value="docker">Docker</option>
+              <option value="postgresql">PostgreSQL</option>
+              <option value="javascript">JavaScript</option>
+              <option value="vuedotjs">Vue</option>
+            </select>
           </div>
-          <div class="sc-info">
-            <p class="sc-name">JavaScript</p>
-            <p class="sc-cat" style="color:#60a5fa;">FRONTEND</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 5</p>
-            <p class="sc-hours">329h</p>
+          <div class="field-group">
+            <label class="field-label">Estado</label>
+            <select name="pstatus" class="field-input"
+              onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
+              <option value="En progreso">En progreso</option>
+              <option value="Completado">Completado</option>
+              <option value="Pendiente">Pendiente</option>
+            </select>
           </div>
         </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 5 de 5</span><span>95%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:95%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" onclick="closeModal('modal-project')">Cancelar</button>
+          <button type="submit" class="btn-primary">
+            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            </svg>
+            Agregar
+          </button>
         </div>
-      </div>
-
-      <!-- React -->
-      <div class="skill-card" data-cat="Frontend" data-kw="react frontend">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#06b6d4,#0284c7)">
-            <img src="https://cdn.simpleicons.org/react/ffffff" width="20" height="20" alt="React" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">React</p>
-            <p class="sc-cat" style="color:#60a5fa;">FRONTEND</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 4</p>
-            <p class="sc-hours">218h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 4 de 5</span><span>80%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
-        </div>
-      </div>
-
-      <!-- Node.js -->
-      <div class="skill-card" data-cat="Backend" data-kw="node.js nodejs backend">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#16a34a,#15803d)">
-            <img src="https://cdn.simpleicons.org/nodedotjs/ffffff" width="20" height="20" alt="Node.js" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">Node.js</p>
-            <p class="sc-cat" style="color:#34d399;">BACKEND</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 3</p>
-            <p class="sc-hours">120h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 3 de 5</span><span>65%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:65%;background:linear-gradient(90deg,#10b981,#34d399)"></div></div>
-        </div>
-      </div>
-
-      <!-- PostgreSQL -->
-      <div class="skill-card" data-cat="Data" data-kw="postgresql postgres data">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#2563eb,#1d4ed8)">
-            <img src="https://cdn.simpleicons.org/postgresql/ffffff" width="20" height="20" alt="PostgreSQL" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">PostgreSQL</p>
-            <p class="sc-cat" style="color:#a78bfa;">DATA</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 3</p>
-            <p class="sc-hours">90h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 3 de 5</span><span>60%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:60%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div>
-        </div>
-      </div>
-
-      <!-- Docker -->
-      <div class="skill-card" data-cat="DevOps" data-kw="docker devops">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">
-            <img src="https://cdn.simpleicons.org/docker/ffffff" width="22" height="22" alt="Docker" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">Docker</p>
-            <p class="sc-cat" style="color:#fbbf24;">DEVOPS</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 2</p>
-            <p class="sc-hours">45h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 2 de 5</span><span>40%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:40%;background:linear-gradient(90deg,#f59e0b,#fcd34d)"></div></div>
-        </div>
-      </div>
-
-      <!-- TypeScript -->
-      <div class="skill-card" data-cat="Frontend" data-kw="typescript frontend">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">
-            <img src="https://cdn.simpleicons.org/typescript/ffffff" width="19" height="19" alt="TypeScript" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">TypeScript</p>
-            <p class="sc-cat" style="color:#60a5fa;">FRONTEND</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 4</p>
-            <p class="sc-hours">175h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 4 de 5</span><span>80%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
-        </div>
-      </div>
-
-      <!-- Python -->
-      <div class="skill-card" data-cat="Data" data-kw="python data">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">
-            <img src="https://cdn.simpleicons.org/python/ffffff" width="20" height="20" alt="Python" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">Python</p>
-            <p class="sc-cat" style="color:#a78bfa;">DATA</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 3</p>
-            <p class="sc-hours">98h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 3 de 5</span><span>60%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:60%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div>
-        </div>
-      </div>
-
-      <!-- Flutter -->
-      <div class="skill-card" data-cat="Mobile" data-kw="flutter mobile dart">
-        <div class="sc-top">
-          <div class="sc-avatar" style="background:linear-gradient(135deg,#f43f5e,#be185d)">
-            <img src="https://cdn.simpleicons.org/flutter/ffffff" width="20" height="20" alt="Flutter" />
-          </div>
-          <div class="sc-info">
-            <p class="sc-name">Flutter</p>
-            <p class="sc-cat" style="color:#fb7185;">MOBILE</p>
-          </div>
-          <div class="sc-right">
-            <p class="sc-level">Nv 2</p>
-            <p class="sc-hours">60h</p>
-          </div>
-        </div>
-        <div class="sc-bottom">
-          <div class="sc-meta"><span>Nivel 2 de 5</span><span>40%</span></div>
-          <div class="sc-track"><div class="sc-fill" style="width:40%;background:linear-gradient(90deg,#f43f5e,#fb7185)"></div></div>
-        </div>
-      </div>
-
-      <!-- Empty state -->
-      <div id="empty" class="hidden col-span-full text-center py-14" style="color:#3d5470;">
-        <svg class="mx-auto mb-3 opacity-30" width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <p class="text-sm">No se encontraron skills con ese filtro.</p>
-      </div>
-
+      </form>
     </div>
   </div>
 

@@ -1,13 +1,51 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Filter pills ── */
+/* ─────────────────────────────────────────
+   SECTION HEADER
+───────────────────────────────────────── */
+.section-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.section-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #e8f0fe;
+  letter-spacing: -.02em;
+  margin-bottom: 6px;
+}
+.section-sub {
+  font-size: 13px;
+  color: #7a95b8;
+}
+
+/* ─────────────────────────────────────────
+   CONTROLS BAR (filtros + búsqueda)
+───────────────────────────────────────── */
+.controls-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.pills-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #0c1526;
+  border: 1px solid #1a2d48;
+}
 .fpill {
   font-size: 12px;
   font-weight: 500;
@@ -28,96 +66,404 @@ body {
   border-color: #3b82f6;
 }
 
-/* ── Skill card ── */
-.skill-card {
+.search-wrap {
+  position: relative;
+}
+.search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.search-input {
   background: #0c1526;
   border: 1px solid #1a2d48;
-  border-radius: 10px;
-  padding: 14px 15px;
+  color: #e8f0fe;
+  border-radius: 8px;
+  padding: 7px 14px 7px 32px;
+  font-size: 12px;
+  font-family: inherit;
+  width: 200px;
+  outline: none;
+  transition: border-color .15s;
+}
+.search-input::placeholder { color: #3d5470; }
+
+/* ─────────────────────────────────────────
+   SKILLS GRID — big cards
+───────────────────────────────────────── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.big-card {
+  position: relative;
+  background: #0c1526;
+  border: 1px solid #1a2d48;
+  border-radius: 14px;
+  padding: 20px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  transition: border-color .2s, background .2s;
-}
-.skill-card:hover {
-  border-color: #243d5e;
-  background: #0e1a2d;
-}
-
-.sc-top {
-  display: flex;
   align-items: center;
   gap: 10px;
+  transition: border-color .2s, background .2s, transform .15s;
+  cursor: default;
+}
+.big-card:hover {
+  border-color: #2a4a72;
+  background: #0e1a2e;
+  transform: translateY(-2px);
 }
 
-.sc-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+/* badge de nivel — esquina superior derecha */
+.bc-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 99px;
+  letter-spacing: .04em;
+  line-height: 1;
+}
+
+/* contenedor del icono */
+.bc-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: #fff;
   flex-shrink: 0;
-  letter-spacing: .01em;
 }
 
-.sc-info {
-  flex: 1;
-  min-width: 0;
-}
-.sc-name {
-  font-size: 13px;
-  font-weight: 600;
+.bc-name {
+  font-size: 14px;
+  font-weight: 700;
   color: #e8f0fe;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 2px;
+  text-align: center;
 }
-.sc-cat {
+
+.bc-cat-tag {
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .08em;
+  padding: 3px 8px;
+  border-radius: 99px;
 }
 
-.sc-right {
-  text-align: right;
-  flex-shrink: 0;
-}
-.sc-level {
-  font-size: 13px;
-  font-weight: 700;
-  color: #e8f0fe;
-  white-space: nowrap;
-}
-.sc-hours {
-  font-size: 10px;
-  color: #3d5470;
-  margin-top: 2px;
-}
-
-/* progress */
-.sc-bottom { display: flex; flex-direction: column; gap: 5px; }
-.sc-meta {
+/* barra de progreso */
+.bc-track-wrap {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: #3d5470;
+  align-items: center;
+  gap: 6px;
 }
-.sc-track {
+.bc-track {
+  flex: 1;
   height: 4px;
   border-radius: 99px;
   background: #152030;
   overflow: hidden;
 }
-.sc-fill {
+.bc-fill {
   height: 100%;
   border-radius: 99px;
+  transition: width .4s ease;
 }
+.bc-pct {
+  font-size: 10px;
+  color: #7a95b8;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: right;
+}
+
+.bc-hours {
+  font-size: 10px;
+  color: #3d5470;
+}
+
+/* tarjeta "+ Añadir habilidad" */
+.big-card--add {
+  border-style: dashed;
+  border-color: #1a2d48;
+  justify-content: center;
+  min-height: 190px;
+  cursor: pointer;
+  gap: 8px;
+  transition: border-color .2s, background .2s, transform .15s;
+}
+.big-card--add:hover {
+  border-color: #3b82f6;
+  background: #0c1a2e;
+  transform: translateY(-2px);
+}
+.big-card--add:hover svg { stroke: #3b82f6; }
+.big-card--add:hover .bc-add-label { color: #3b82f6; }
+.bc-add-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #3d5470;
+  transition: color .2s;
+}
+
+/* ─────────────────────────────────────────
+   PROYECTOS — layout
+───────────────────────────────────────── */
+.projects-layout {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 14px;
+  align-items: start;
+}
+
+/* lista de tarjetas de proyecto */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.proj-card {
+  background: #0c1526;
+  border: 1px solid #1a2d48;
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color .2s, background .2s;
+}
+.proj-card:hover {
+  border-color: #2a4a72;
+  background: #0e1a2e;
+}
+
+.proj-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.proj-info {
+  flex: 1;
+  min-width: 0;
+}
+.proj-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e8f0fe;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.proj-desc {
+  font-size: 12px;
+  color: #7a95b8;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* badges de estado */
+.proj-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.badge-progress {
+  background: #2a2000;
+  color: #fbbf24;
+  border: 1px solid #3d2e00;
+}
+.badge-done {
+  background: #062010;
+  color: #34d399;
+  border: 1px solid #0a3018;
+}
+.badge-pending {
+  background: #0d1a30;
+  color: #60a5fa;
+  border: 1px solid #1a2d48;
+}
+
+/* panel lateral "Añadir proyecto" */
+.proj-add-panel {
+  background: #0c1526;
+  border: 1px dashed #1a2d48;
+  border-radius: 12px;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  min-height: 100px;
+}
+.proj-add-panel:hover {
+  border-color: #3b82f6;
+  background: #0c1a2e;
+}
+.proj-add-panel:hover svg { stroke: #3b82f6; }
+.proj-add-panel:hover .proj-add-label { color: #3b82f6; }
+.proj-add-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #3d5470;
+  transition: color .2s;
+}
+
+/* responsive: proyectos en columna única en móvil */
+@media (max-width: 640px) {
+  .projects-layout {
+    grid-template-columns: 1fr;
+  }
+  .proj-add-panel {
+    flex-direction: row;
+    padding: 16px;
+    min-height: auto;
+  }
+}
+
+/* ─────────────────────────────────────────
+   MODALES
+───────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 13, 26, .75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-box {
+  background: #0c1526;
+  border: 1px solid #1a2d48;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.5);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e8f0fe;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: #7a95b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  line-height: 0;
+  transition: color .15s, background .15s;
+}
+.modal-close:hover { color: #e8f0fe; background: #152030; }
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+.field-row {
+  display: flex;
+  gap: 10px;
+}
+.field-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #7a95b8;
+}
+.field-input {
+  background: #070d1a;
+  border: 1px solid #1a2d48;
+  color: #e8f0fe;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+  appearance: none;
+}
+.field-input::placeholder { color: #3d5470; }
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+.btn-cancel {
+  background: transparent;
+  border: 1px solid #1a2d48;
+  color: #7a95b8;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-cancel:hover { color: #e8f0fe; border-color: #2a4a72; }
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #3b82f6;
+  border: 1px solid #3b82f6;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-primary:hover { background: #2563eb; border-color: #2563eb; }
 
 /* number input arrows */
 input[type=number]::-webkit-inner-spin-button,
