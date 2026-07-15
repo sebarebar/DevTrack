@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Filter pills ── */
+.fpill {
+  font-size: 12px;
+  font-weight: 500;
+  color: #7a95b8;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 5px 14px;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.fpill:hover { color: #e8f0fe; }
+.fpill.active {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+}
+
+/* ── Skill card ── */
+.skill-card {
+  background: #0c1526;
+  border: 1px solid #1a2d48;
+  border-radius: 10px;
+  padding: 14px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  transition: border-color .2s, background .2s;
+}
+.skill-card:hover {
+  border-color: #243d5e;
+  background: #0e1a2d;
+}
+
+.sc-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sc-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: .01em;
+}
+
+.sc-info {
+  flex: 1;
+  min-width: 0;
+}
+.sc-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8f0fe;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.sc-cat {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.sc-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+.sc-level {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f0fe;
+  white-space: nowrap;
+}
+.sc-hours {
+  font-size: 10px;
+  color: #3d5470;
+  margin-top: 2px;
+}
+
+/* progress */
+.sc-bottom { display: flex; flex-direction: column; gap: 5px; }
+.sc-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #3d5470;
+}
+.sc-track {
+  height: 4px;
+  border-radius: 99px;
+  background: #152030;
+  overflow: hidden;
+}
+.sc-fill {
+  height: 100%;
+  border-radius: 99px;
+}
+
+/* number input arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { opacity: .4; }

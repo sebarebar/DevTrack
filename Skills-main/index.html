@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevTrack — Skills</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="min-h-screen" style="background:#070d1a;font-family:'Inter',system-ui,sans-serif;color:#e8f0fe;">
+
+  <div class="max-w-6xl mx-auto px-6 py-8">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-6">
+      <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#3b82f6;letter-spacing:.12em;">Tecnologías</p>
+      <h1 class="text-2xl font-extrabold tracking-tight mb-1" style="letter-spacing:-.02em;">Skills</h1>
+      <p class="text-sm leading-relaxed max-w-sm" style="color:#7a95b8;">
+        Registra las tecnologías que dominas, organizadas por categoría y mide tu progreso con horas reales de práctica.
+      </p>
+    </div>
+
+    <!-- ADD SKILL FORM -->
+    <div class="rounded-xl border mb-5 px-5 py-4" style="background:#0c1526;border-color:#1a2d48;">
+      <p class="text-sm font-semibold mb-0.5">Agregar nueva skill</p>
+      <p class="text-xs mb-4" style="color:#3d5470;">Completa los campos para añadirla a tu perfil</p>
+      <form id="skill-form" class="flex flex-wrap gap-3 items-end">
+        <!-- Nombre -->
+        <div class="flex flex-col gap-1 flex-1 min-w-[160px]">
+          <label class="text-xs font-medium" style="color:#7a95b8;">Nombre</label>
+          <input name="sname" type="text" placeholder="Ej. TypeScript" required
+            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors"
+            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+        </div>
+        <!-- Categoría -->
+        <div class="flex flex-col gap-1" style="width:140px;">
+          <label class="text-xs font-medium" style="color:#7a95b8;">Categoría</label>
+          <select name="scategory"
+            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors cursor-pointer appearance-none"
+            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Data">Data</option>
+            <option value="Mobile">Mobile</option>
+          </select>
+        </div>
+        <!-- Nivel -->
+        <div class="flex flex-col gap-1" style="width:120px;">
+          <label class="text-xs font-medium" style="color:#7a95b8;">Nivel</label>
+          <select name="slevel"
+            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors cursor-pointer appearance-none"
+            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'">
+            <option value="1">Nivel 1</option>
+            <option value="2">Nivel 2</option>
+            <option value="3" selected>Nivel 3</option>
+            <option value="4">Nivel 4</option>
+            <option value="5">Nivel 5</option>
+          </select>
+        </div>
+        <!-- Horas -->
+        <div class="flex flex-col gap-1" style="width:100px;">
+          <label class="text-xs font-medium" style="color:#7a95b8;">Horas</label>
+          <input name="shours" type="number" placeholder="120" min="0"
+            class="rounded-lg px-3 py-2 text-sm outline-none transition-colors"
+            style="background:#070d1a;border:1px solid #1a2d48;color:#e8f0fe;"
+            onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+        </div>
+        <!-- Submit -->
+        <button type="submit"
+          class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors"
+          style="background:#3b82f6;border:1px solid #3b82f6;align-self:flex-end;"
+          onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='#3b82f6'">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+          </svg>
+          Agregar
+        </button>
+      </form>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <!-- Pills -->
+      <div class="flex items-center gap-1 p-1 rounded-lg" style="background:#0c1526;border:1px solid #1a2d48;">
+        <button class="fpill active" onclick="setFilter('Todos',this)">Todos</button>
+        <button class="fpill" onclick="setFilter('Frontend',this)">Frontend</button>
+        <button class="fpill" onclick="setFilter('Backend',this)">Backend</button>
+        <button class="fpill" onclick="setFilter('DevOps',this)">DevOps</button>
+        <button class="fpill" onclick="setFilter('Data',this)">Data</button>
+        <button class="fpill" onclick="setFilter('Mobile',this)">Mobile</button>
+      </div>
+      <!-- Search -->
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="13" height="13"
+          fill="none" stroke="#3d5470" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+        </svg>
+        <input id="search" type="text" placeholder="Buscar skill..."
+          class="rounded-lg pl-8 pr-4 py-2 text-xs outline-none transition-colors"
+          style="background:#0c1526;border:1px solid #1a2d48;color:#e8f0fe;width:190px;"
+          onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='#1a2d48'" />
+      </div>
+    </div>
+
+    <!-- SKILLS GRID -->
+    <div id="skills-grid" class="grid gap-3" style="grid-template-columns:repeat(auto-fill,minmax(185px,1fr));">
+
+      <!-- JavaScript -->
+      <div class="skill-card" data-cat="Frontend" data-kw="javascript frontend">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">
+            <img src="https://cdn.simpleicons.org/javascript/ffffff" width="20" height="20" alt="JavaScript" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">JavaScript</p>
+            <p class="sc-cat" style="color:#60a5fa;">FRONTEND</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 5</p>
+            <p class="sc-hours">329h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 5 de 5</span><span>95%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:95%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+        </div>
+      </div>
+
+      <!-- React -->
+      <div class="skill-card" data-cat="Frontend" data-kw="react frontend">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#06b6d4,#0284c7)">
+            <img src="https://cdn.simpleicons.org/react/ffffff" width="20" height="20" alt="React" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">React</p>
+            <p class="sc-cat" style="color:#60a5fa;">FRONTEND</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 4</p>
+            <p class="sc-hours">218h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 4 de 5</span><span>80%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+        </div>
+      </div>
+
+      <!-- Node.js -->
+      <div class="skill-card" data-cat="Backend" data-kw="node.js nodejs backend">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#16a34a,#15803d)">
+            <img src="https://cdn.simpleicons.org/nodedotjs/ffffff" width="20" height="20" alt="Node.js" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">Node.js</p>
+            <p class="sc-cat" style="color:#34d399;">BACKEND</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 3</p>
+            <p class="sc-hours">120h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 3 de 5</span><span>65%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:65%;background:linear-gradient(90deg,#10b981,#34d399)"></div></div>
+        </div>
+      </div>
+
+      <!-- PostgreSQL -->
+      <div class="skill-card" data-cat="Data" data-kw="postgresql postgres data">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#2563eb,#1d4ed8)">
+            <img src="https://cdn.simpleicons.org/postgresql/ffffff" width="20" height="20" alt="PostgreSQL" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">PostgreSQL</p>
+            <p class="sc-cat" style="color:#a78bfa;">DATA</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 3</p>
+            <p class="sc-hours">90h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 3 de 5</span><span>60%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:60%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div>
+        </div>
+      </div>
+
+      <!-- Docker -->
+      <div class="skill-card" data-cat="DevOps" data-kw="docker devops">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">
+            <img src="https://cdn.simpleicons.org/docker/ffffff" width="22" height="22" alt="Docker" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">Docker</p>
+            <p class="sc-cat" style="color:#fbbf24;">DEVOPS</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 2</p>
+            <p class="sc-hours">45h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 2 de 5</span><span>40%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:40%;background:linear-gradient(90deg,#f59e0b,#fcd34d)"></div></div>
+        </div>
+      </div>
+
+      <!-- TypeScript -->
+      <div class="skill-card" data-cat="Frontend" data-kw="typescript frontend">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">
+            <img src="https://cdn.simpleicons.org/typescript/ffffff" width="19" height="19" alt="TypeScript" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">TypeScript</p>
+            <p class="sc-cat" style="color:#60a5fa;">FRONTEND</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 4</p>
+            <p class="sc-hours">175h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 4 de 5</span><span>80%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:80%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div>
+        </div>
+      </div>
+
+      <!-- Python -->
+      <div class="skill-card" data-cat="Data" data-kw="python data">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">
+            <img src="https://cdn.simpleicons.org/python/ffffff" width="20" height="20" alt="Python" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">Python</p>
+            <p class="sc-cat" style="color:#a78bfa;">DATA</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 3</p>
+            <p class="sc-hours">98h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 3 de 5</span><span>60%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:60%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div>
+        </div>
+      </div>
+
+      <!-- Flutter -->
+      <div class="skill-card" data-cat="Mobile" data-kw="flutter mobile dart">
+        <div class="sc-top">
+          <div class="sc-avatar" style="background:linear-gradient(135deg,#f43f5e,#be185d)">
+            <img src="https://cdn.simpleicons.org/flutter/ffffff" width="20" height="20" alt="Flutter" />
+          </div>
+          <div class="sc-info">
+            <p class="sc-name">Flutter</p>
+            <p class="sc-cat" style="color:#fb7185;">MOBILE</p>
+          </div>
+          <div class="sc-right">
+            <p class="sc-level">Nv 2</p>
+            <p class="sc-hours">60h</p>
+          </div>
+        </div>
+        <div class="sc-bottom">
+          <div class="sc-meta"><span>Nivel 2 de 5</span><span>40%</span></div>
+          <div class="sc-track"><div class="sc-fill" style="width:40%;background:linear-gradient(90deg,#f43f5e,#fb7185)"></div></div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty" class="hidden col-span-full text-center py-14" style="color:#3d5470;">
+        <svg class="mx-auto mb-3 opacity-30" width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <p class="text-sm">No se encontraron skills con ese filtro.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
