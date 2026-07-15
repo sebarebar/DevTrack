@@ -1,14 +1,4 @@
 {
   "name": "devtrack",
-  "private": true,
-  "scripts": {
-    "dev": "vite --port 8080 --host",
-    "build": "vite build",
-    "preview": "vite preview --port 8080 --host"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.2.1",
-    "tailwindcss": "^4.2.1",
-    "vite": "^8.0.16"
-  }
+  "private": true
 }
