@@ -13,7 +13,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-pool.connect((err, client, done) => {
+pool.connect((err, client) => {
   if (err) {
     console.error('Connection error:', err.message);
   } else {
