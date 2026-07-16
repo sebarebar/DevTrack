@@ -1,258 +1,309 @@
-'use strict';
+let filtroActivo = 'Todos'
+let textoBusqueda = ''
 
-// ─────────────────────────────────────────
-// MODALES
-// ─────────────────────────────────────────
-function openModal(id) {
-  document.getElementById(id).classList.remove('hidden');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.add('hidden');
-}
+let filtroProyecto = 'Todos'
+let textoBusquedaProyecto = ''
 
-// Cerrar modal al hacer clic fuera del cuadro
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', function (e) {
-    if (e.target === this) closeModal(this.id);
-  });
-});
-
-// Botones que abren modales
-document.getElementById('btn-open-skill-modal').addEventListener('click', () => openModal('modal-skill'));
-document.getElementById('btn-open-proj-modal').addEventListener('click', () => openModal('modal-project'));
-
-
-// ─────────────────────────────────────────
-// SKILLS — filtro y búsqueda
-// ─────────────────────────────────────────
-let activeFilter = 'Todos';
-let activeSearch = '';
-
-function setFilter(cat, btn) {
-  activeFilter = cat;
-  document.querySelectorAll('.fpill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSkills();
-}
-
-document.getElementById('search').addEventListener('input', function () {
-  activeSearch = this.value.toLowerCase().trim();
-  renderSkills();
-});
-
-function renderSkills() {
-  let visible = 0;
-  document.querySelectorAll('#skills-grid .big-card:not(.big-card--add)').forEach(card => {
-    const match =
-      (activeFilter === 'Todos' || card.dataset.cat === activeFilter) &&
-      (!activeSearch || card.dataset.kw.includes(activeSearch));
-    card.style.display = match ? '' : 'none';
-    if (match) visible++;
-  });
-  document.getElementById('skills-empty').classList.toggle('hidden', visible > 0);
-}
-
-
-// ─────────────────────────────────────────
-// SKILLS — mapa de slugs para Simple Icons
-// ─────────────────────────────────────────
-const ICON_SLUGS = {
-  'javascript':    ['javascript',   'f7df1e'],
-  'typescript':    ['typescript',   '3178c6'],
-  'react':         ['react',        '61dafb'],
-  'vue':           ['vuedotjs',     '4FC08D'],
-  'angular':       ['angular',      'DD0031'],
-  'svelte':        ['svelte',       'FF3E00'],
-  'next.js':       ['nextdotjs',    'ffffff'],
-  'nextjs':        ['nextdotjs',    'ffffff'],
-  'node.js':       ['nodedotjs',    '4ade80'],
-  'nodejs':        ['nodedotjs',    '4ade80'],
-  'express':       ['express',      'ffffff'],
-  'nestjs':        ['nestjs',       'E0234E'],
-  'python':        ['python',       'ffffff'],
-  'django':        ['django',       '092E20'],
-  'fastapi':       ['fastapi',      '009688'],
-  'postgresql':    ['postgresql',   '4169e1'],
-  'postgres':      ['postgresql',   '4169e1'],
-  'mysql':         ['mysql',        '4479A1'],
-  'mongodb':       ['mongodb',      '47A248'],
-  'redis':         ['redis',        'DC382D'],
-  'docker':        ['docker',       '2496ed'],
-  'kubernetes':    ['kubernetes',   '326CE5'],
-  'git':           ['git',          'F05032'],
-  'github':        ['github',       'ffffff'],
-  'linux':         ['linux',        'FCC624'],
-  'flutter':       ['flutter',      '02569B'],
-  'dart':          ['dart',         '0175C2'],
-  'swift':         ['swift',        'FA7343'],
-  'kotlin':        ['kotlin',       '7F52FF'],
-  'tailwind':      ['tailwindcss',  '06B6D4'],
-  'graphql':       ['graphql',      'E10098'],
-  'aws':           ['amazonaws',    'FF9900'],
-  'firebase':      ['firebase',     'FFCA28'],
-  'supabase':      ['supabase',     '3ECF8E'],
-  'figma':         ['figma',        'F24E1E'],
-};
-
-function getIconHTML(name, size = 42) {
-  const entry = ICON_SLUGS[name.toLowerCase()];
-  if (entry) {
-    const [slug, color] = entry;
-    return `<img src="https://cdn.simpleicons.org/${slug}/${color}" width="${size}" height="${size}" alt="${name}" style="display:block;" />`;
+const heroInfo = {
+  skills: {
+    eyebrow: 'Tecnologías',
+    title: 'Tu stack como <em>developer</em>,<br>en un solo lugar.',
+    desc: 'Registra las tecnologías que dominas, organizadas por categoría y mide tu progreso con horas reales de práctica.'
+  },
+  projects: {
+    eyebrow: 'Repositorios',
+    title: 'Tus proyectos,<br><em>organizados y listos.</em>',
+    desc: 'Agrega proyectos manualmente o importa tus repositorios desde GitHub. Filtra por estado y lleva el control.'
   }
-  // fallback: iniciales
-  return `<span style="font-size:18px;font-weight:800;letter-spacing:.01em;color:#e8f0fe;">${name.slice(0, 2).toUpperCase()}</span>`;
 }
 
-// ── Color configs por categoría ──────────
-const CAT_CONFIG = {
-  Frontend: {
-    avatarBg: 'linear-gradient(135deg,#0d1f3c,#0a1a38)',
-    barFill:  'linear-gradient(90deg,#3b82f6,#60a5fa)',
-    tagColor: '#60a5fa',
-    tagBg:    '#1a2d48',
-  },
-  Backend: {
-    avatarBg: 'linear-gradient(135deg,#0d2416,#0a1f12)',
-    barFill:  'linear-gradient(90deg,#10b981,#34d399)',
-    tagColor: '#34d399',
-    tagBg:    '#0d2316',
-  },
-  DevOps: {
-    avatarBg: 'linear-gradient(135deg,#1e1200,#1a1000)',
-    barFill:  'linear-gradient(90deg,#f59e0b,#fcd34d)',
-    tagColor: '#fbbf24',
-    tagBg:    '#1f1708',
-  },
-  Data: {
-    avatarBg: 'linear-gradient(135deg,#1a1a2e,#1a1530)',
-    barFill:  'linear-gradient(90deg,#8b5cf6,#a78bfa)',
-    tagColor: '#a78bfa',
-    tagBg:    '#1e1535',
-  },
-  Mobile: {
-    avatarBg: 'linear-gradient(135deg,#2a0a14,#1e0810)',
-    barFill:  'linear-gradient(90deg,#f43f5e,#fb7185)',
-    tagColor: '#fb7185',
-    tagBg:    '#2a0a14',
-  },
-};
+function switchTab(tab, el) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'))
+  el.classList.add('active')
 
-// badge color: dorado para nv 4-5, gris para el resto
-function badgeStyle(level) {
-  return level >= 4
-    ? 'background:#f59e0b;color:#fff;'
-    : 'background:#64748b;color:#e2e8f0;';
+  const secSkills = document.getElementById('tab-skills')
+  const secProyectos = document.getElementById('tab-projects')
+
+  if (tab === 'skills') {
+    secSkills.style.display = ''
+    secProyectos.style.display = 'none'
+  } else {
+    secSkills.style.display = 'none'
+    secProyectos.style.display = ''
+  }
+
+  const info = heroInfo[tab]
+  document.getElementById('hero-eyebrow').textContent = info.eyebrow
+  document.getElementById('hero-title').innerHTML = info.title
+  document.getElementById('hero-desc').textContent = info.desc
 }
 
+function setSkillFilter(categoria, boton) {
+  filtroActivo = categoria
+  document.querySelectorAll('#tab-skills .fpill').forEach(p => p.classList.remove('active'))
+  boton.classList.add('active')
+  mostrarSkills()
+}
 
-// ─────────────────────────────────────────
-// SKILLS — agregar nueva
-// ─────────────────────────────────────────
-document.getElementById('skill-form').addEventListener('submit', function (e) {
-  e.preventDefault();
+document.getElementById('skill-search').addEventListener('input', function() {
+  textoBusqueda = this.value.toLowerCase()
+  mostrarSkills()
+})
 
-  const name  = this.sname.value.trim();
-  const cat   = this.scategory.value;
-  const level = parseInt(this.slevel.value);
-  const hours = this.shours.value.trim();
-  if (!name) return;
+function mostrarSkills() {
+  const cards = document.querySelectorAll('.skill-card')
+  let visibles = 0
 
-  const pct = Math.round((level / 5) * 100);
-  const cfg = CAT_CONFIG[cat];
+  cards.forEach(card => {
+    const pasaCategoria = filtroActivo === 'Todos' || card.dataset.cat === filtroActivo
+    const pasaBusqueda = textoBusqueda === '' || card.dataset.kw.includes(textoBusqueda)
 
-  const card = document.createElement('div');
-  card.className = 'big-card';
-  card.dataset.cat = cat;
-  card.dataset.kw  = `${name} ${cat}`.toLowerCase();
+    if (pasaCategoria && pasaBusqueda) {
+      card.style.display = ''
+      visibles++
+    } else {
+      card.style.display = 'none'
+    }
+  })
 
-  card.innerHTML = `
-    <div class="bc-badge" style="${badgeStyle(level)}">Nv ${level}</div>
-    <div class="bc-icon-wrap" style="background:${cfg.avatarBg};">
-      ${getIconHTML(name)}
+  const msgVacio = document.getElementById('skills-empty')
+  if (visibles === 0) {
+    msgVacio.classList.remove('hidden')
+  } else {
+    msgVacio.classList.add('hidden')
+  }
+}
+
+function setProjFilter(estado, boton) {
+  filtroProyecto = estado
+  document.querySelectorAll('#tab-projects .fpill').forEach(p => p.classList.remove('active'))
+  boton.classList.add('active')
+  mostrarProyectos()
+}
+
+document.getElementById('proj-search').addEventListener('input', function() {
+  textoBusquedaProyecto = this.value.toLowerCase()
+  mostrarProyectos()
+})
+
+function mostrarProyectos() {
+  const cards = document.querySelectorAll('.proj-card')
+  let visibles = 0
+
+  cards.forEach(card => {
+    const pasaEstado = filtroProyecto === 'Todos' || card.dataset.status === filtroProyecto
+    const pasaBusqueda = textoBusquedaProyecto === '' || card.dataset.kw.includes(textoBusquedaProyecto)
+
+    if (pasaEstado && pasaBusqueda) {
+      card.style.display = ''
+      visibles++
+    } else {
+      card.style.display = 'none'
+    }
+  })
+
+  const msgVacio = document.getElementById('proj-empty')
+  if (visibles === 0) {
+    msgVacio.classList.remove('hidden')
+  } else {
+    msgVacio.classList.add('hidden')
+  }
+}
+
+function deleteCard(btn) {
+  const card = btn.closest('.skill-card, .proj-card')
+  card.style.transition = 'opacity 0.2s, transform 0.2s'
+  card.style.opacity = '0'
+  card.style.transform = 'scale(0.95)'
+
+  setTimeout(() => {
+    card.remove()
+    mostrarSkills()
+    mostrarProyectos()
+  }, 200)
+}
+
+const iconosPorNombre = {
+  'javascript': 'javascript',
+  'typescript': 'typescript',
+  'react': 'react',
+  'vue': 'vuedotjs',
+  'vue.js': 'vuedotjs',
+  'angular': 'angular',
+  'svelte': 'svelte',
+  'next.js': 'nextdotjs',
+  'nextjs': 'nextdotjs',
+  'node.js': 'nodedotjs',
+  'nodejs': 'nodedotjs',
+  'express': 'express',
+  'nestjs': 'nestjs',
+  'python': 'python',
+  'django': 'django',
+  'fastapi': 'fastapi',
+  'postgresql': 'postgresql',
+  'mysql': 'mysql',
+  'mongodb': 'mongodb',
+  'redis': 'redis',
+  'docker': 'docker',
+  'kubernetes': 'kubernetes',
+  'git': 'git',
+  'github': 'github',
+  'linux': 'linux',
+  'flutter': 'flutter',
+  'dart': 'dart',
+  'swift': 'swift',
+  'kotlin': 'kotlin',
+  'tailwind': 'tailwindcss',
+  'graphql': 'graphql',
+  'aws': 'amazonaws',
+  'firebase': 'firebase',
+  'supabase': 'supabase',
+  'figma': 'figma',
+  'rust': 'rust',
+  'go': 'go',
+  'java': 'java',
+  'php': 'php',
+  'laravel': 'laravel'
+}
+
+function getIcono(nombre) {
+  const slug = iconosPorNombre[nombre.toLowerCase()]
+
+  if (slug) {
+    return `<img src="https://cdn.simpleicons.org/${slug}/ffffff" width="26" height="26" alt="${nombre}" />`
+  }
+
+  const iniciales = nombre.slice(0, 2).toUpperCase()
+  return `<span style="font-size:14px;font-weight:800;color:#fff">${iniciales}</span>`
+}
+
+const colorPorCategoria = {
+  'Frontend': 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+  'Backend': 'linear-gradient(135deg, #059669, #047857)',
+  'DevOps': 'linear-gradient(135deg, #d97706, #b45309)',
+  'Data': 'linear-gradient(135deg, #7c3aed, #6d28d9)',
+  'Mobile': 'linear-gradient(135deg, #db2777, #be185d)'
+}
+
+const barraPorCategoria = {
+  'Frontend': 'linear-gradient(90deg, #2563eb, #60a5fa)',
+  'Backend': 'linear-gradient(90deg, #059669, #34d399)',
+  'DevOps': 'linear-gradient(90deg, #d97706, #fcd34d)',
+  'Data': 'linear-gradient(90deg, #7c3aed, #a78bfa)',
+  'Mobile': 'linear-gradient(90deg, #db2777, #f472b6)'
+}
+
+document.getElementById('skill-form').addEventListener('submit', function(e) {
+  e.preventDefault()
+
+  const nombre = this.sname.value.trim()
+  const categoria = this.scategory.value
+  const nivel = parseInt(this.slevel.value)
+  const horas = this.shours.value.trim()
+
+  if (nombre === '') return
+
+  const porcentaje = Math.round((nivel / 5) * 100)
+  const horasTexto = horas !== '' ? horas + 'h' : '—'
+
+  const nuevaCard = document.createElement('div')
+  nuevaCard.className = 'skill-card'
+  nuevaCard.dataset.cat = categoria
+  nuevaCard.dataset.kw = nombre.toLowerCase() + ' ' + categoria.toLowerCase()
+
+  nuevaCard.innerHTML = `
+    <button class="del-btn" onclick="deleteCard(this)">
+      <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="sc-logo" style="background:${colorPorCategoria[categoria]}">
+      ${getIcono(nombre)}
     </div>
-    <p class="bc-name">${name}</p>
-    <span class="bc-cat-tag" style="color:${cfg.tagColor};background:${cfg.tagBg};">${cat.toUpperCase()}</span>
-    <div class="bc-track-wrap">
-      <div class="bc-track">
-        <div class="bc-fill" style="width:${pct}%;background:${cfg.barFill}"></div>
+    <p class="sc-name">${nombre}</p>
+    <p class="sc-cat ${categoria.toLowerCase()}">${categoria.toUpperCase()}</p>
+    <div class="sc-footer">
+      <div class="sc-stats">
+        <span class="sc-level">Nv ${nivel}</span>
+        <span class="sc-hours">${horasTexto}</span>
       </div>
-      <span class="bc-pct">${pct}%</span>
+      <div class="sc-bar-track">
+        <div class="sc-bar-fill" style="width:${porcentaje}%;background:${barraPorCategoria[categoria]}"></div>
+      </div>
     </div>
-    ${hours ? `<p class="bc-hours">${hours}h practicadas</p>` : ''}
-  `;
+  `
 
-  // Insertar antes del botón "Añadir habilidad"
-  const grid    = document.getElementById('skills-grid');
-  const addBtn  = document.getElementById('btn-open-skill-modal');
-  grid.insertBefore(card, addBtn);
+  const grid = document.getElementById('skills-grid')
+  const msgVacio = document.getElementById('skills-empty')
+  grid.insertBefore(nuevaCard, msgVacio)
 
-  this.reset();
-  closeModal('modal-skill');
-  renderSkills();
-});
+  this.reset()
+  mostrarSkills()
+})
 
+const nombreEstado = {
+  'active': 'Activo',
+  'review': 'En revisión',
+  'done': 'Completado',
+  'paused': 'Pausado'
+}
 
-// ─────────────────────────────────────────
-// PROYECTOS — mapa de colores por tecnología
-// ─────────────────────────────────────────
-const PROJ_TECH_CONFIG = {
-  react:       { bg: 'linear-gradient(135deg,#061a26,#0c2233)', icon: ['react',       '61dafb'] },
-  nodedotjs:   { bg: 'linear-gradient(135deg,#0d2416,#0a1f12)', icon: ['nodedotjs',   '4ade80'] },
-  typescript:  { bg: 'linear-gradient(135deg,#0d1f3c,#0a1a38)', icon: ['typescript',  '3178c6'] },
-  python:      { bg: 'linear-gradient(135deg,#1a1a2e,#1a1530)', icon: ['python',      'ffffff'] },
-  docker:      { bg: 'linear-gradient(135deg,#071d2e,#061826)', icon: ['docker',      '2496ed'] },
-  postgresql:  { bg: 'linear-gradient(135deg,#0d1f40,#081730)', icon: ['postgresql',  '4169e1'] },
-  javascript:  { bg: 'linear-gradient(135deg,#1c2d10,#1a2d1a)', icon: ['javascript',  'f7df1e'] },
-  vuedotjs:    { bg: 'linear-gradient(135deg,#0a1f12,#091a10)', icon: ['vuedotjs',    '4FC08D'] },
-};
+const coloresProyecto = [
+  'linear-gradient(135deg, #2563eb, #1d4ed8)',
+  'linear-gradient(135deg, #7c3aed, #6d28d9)',
+  'linear-gradient(135deg, #059669, #047857)',
+  'linear-gradient(135deg, #d97706, #b45309)',
+  'linear-gradient(135deg, #db2777, #be185d)',
+  'linear-gradient(135deg, #0369a1, #0284c7)'
+]
 
-const BADGE_CLASS = {
-  'En progreso': 'badge-progress',
-  'Completado':  'badge-done',
-  'Pendiente':   'badge-pending',
-};
+document.getElementById('proj-form').addEventListener('submit', function(e) {
+  e.preventDefault()
 
+  const nombre = this.pname.value.trim()
+  const descripcion = this.pdesc.value.trim()
+  const stack = this.pstack.value.trim()
+  const estado = this.pstatus.value
 
-// ─────────────────────────────────────────
-// PROYECTOS — agregar nuevo
-// ─────────────────────────────────────────
-document.getElementById('project-form').addEventListener('submit', function (e) {
-  e.preventDefault();
+  if (nombre === '') return
 
-  const name   = this.pname.value.trim();
-  const desc   = this.pdesc.value.trim();
-  const tech   = this.ptech.value;
-  const status = this.pstatus.value;
-  if (!name) return;
+  const indice = Math.floor(Math.random() * coloresProyecto.length)
+  const colorElegido = coloresProyecto[indice]
+  const iniciales = nombre.slice(0, 2).toUpperCase()
+  const etiqueta = nombreEstado[estado]
 
-  const cfg        = PROJ_TECH_CONFIG[tech] || PROJ_TECH_CONFIG['react'];
-  const [slug, clr] = cfg.icon;
-  const badgeCls   = BADGE_CLASS[status] || 'badge-pending';
+  const descHtml = descripcion !== '' ? `<p class="proj-desc">${descripcion}</p>` : ''
+  const stackHtml = stack !== '' ? `<span class="proj-stack">${stack}</span>` : ''
 
-  const card = document.createElement('div');
-  card.className = 'proj-card';
-  card.dataset.status = status;
+  const nuevaCard = document.createElement('div')
+  nuevaCard.className = 'proj-card'
+  nuevaCard.dataset.status = estado
+  nuevaCard.dataset.kw = nombre.toLowerCase() + ' ' + descripcion.toLowerCase() + ' ' + stack.toLowerCase()
 
-  card.innerHTML = `
-    <div class="proj-icon-wrap" style="background:${cfg.bg};">
-      <img src="https://cdn.simpleicons.org/${slug}/${clr}" width="28" height="28" alt="${name}" />
+  nuevaCard.innerHTML = `
+    <button class="del-btn" onclick="deleteCard(this)">
+      <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="proj-left">
+      <div class="proj-icon" style="background:${colorElegido}">${iniciales}</div>
+      <div class="proj-info">
+        <p class="proj-name">${nombre}</p>
+        ${descHtml}
+        ${stackHtml}
+      </div>
     </div>
-    <div class="proj-info">
-      <p class="proj-name">${name}</p>
-      <p class="proj-desc">${desc || 'Sin descripción'}</p>
-      <span class="proj-badge ${badgeCls}">${status}</span>
+    <div class="proj-right">
+      <span class="status-dot ${estado}"></span>
+      <span class="status-label ${estado}">${etiqueta}</span>
     </div>
-  `;
+  `
 
-  const list  = document.getElementById('projects-list');
-  const empty = document.getElementById('projects-empty');
-  list.insertBefore(card, empty);
+  const grid = document.getElementById('projects-grid')
+  const msgVacio = document.getElementById('proj-empty')
+  grid.insertBefore(nuevaCard, msgVacio)
 
-  this.reset();
-  closeModal('modal-project');
-
-  // Mostrar/ocultar empty state
-  const count = list.querySelectorAll('.proj-card').length;
-  empty.classList.toggle('hidden', count > 0);
-});
+  this.reset()
+  mostrarProyectos()
+})
