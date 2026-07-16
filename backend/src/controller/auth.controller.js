@@ -14,7 +14,7 @@ export const registerUser = async (req, res) => {
   try {
     const existingUser = await POOL.query(
       'SELECT * FROM users WHERE email = $1',
-      [email]
+      [email],
     );
     if (existingUser.rows.length > 0) {
       return res.status(400).json({ error: 'User already exists' });
@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
 
     const newUser = await POOL.query(
       'INSERT INTO users (username, full_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id, username, full_name, email, created_at',
-      [username, full_name, email, hashedPassword]
+      [username, full_name, email, hashedPassword],
     );
 
     res.status(201).json({
@@ -47,7 +47,7 @@ export const loginUser = async (req, res) => {
   try {
     const userResult = await POOL.query(
       'SELECT * FROM users WHERE email = $1',
-      [email]
+      [email],
     );
 
     if (userResult.rows.length === 0) {
@@ -64,7 +64,7 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || 'firma_secreta_alternativa',
-      { expiresIn: '1h' }
+      { expiresIn: '1h' },
     );
 
     res.status(200).json({
