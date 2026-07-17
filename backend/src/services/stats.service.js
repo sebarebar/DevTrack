@@ -1,35 +1,66 @@
-import POOL from '../db.js';
+import pool from '../config/db.js';
+import { checkAndAssignBadges } from './badges.service.js';
 
 export const calculateStats = async (userId) => {
   try {
-    const [skills, projects, study] = await Promise.all([
-      POOL.query('SELECT COUNT(*) FROM skills WHERE user_id = $1', [userId]),
-      POOL.query('SELECT COUNT(*) FROM projects WHERE user_id = $1', [userId]),
-      POOL.query('SELECT SUM(hours) FROM study_logs WHERE user_id = $1', [
-        userId,
-      ]),
+    const [skillsResult, projectsResult, studyLogsResult] = await Promise.all([
+      pool.query(
+        'SELECT COUNT(*) FROM user_skills WHERE user_id = $1',
+        [userId]
+      ),
+      pool.query(
+        'SELECT COUNT(*) FROM projects WHERE user_id = $1',
+        [userId]
+      ),
+      pool.query(
+        `SELECT COALESCE(SUM(hours), 0) AS total
+         FROM study_logs
+         WHERE user_id = $1`,
+        [userId]
+      ),
     ]);
 
+    const totalSkills = Number(skillsResult.rows[0].count);
+    const totalProjects = Number(projectsResult.rows[0].count);
+    const totalHours = Number(studyLogsResult.rows[0].total);
+
     const totalPoints =
-      parseInt(skills.rows[0].count) * 10 +
-      parseInt(projects.rows[0].count) * 50 +
-      parseInt(study.rows[0].sum || 0) * 2;
+      totalSkills * 10 +
+      totalProjects * 50 +
+      totalHours * 2;
 
     let level = 'Junior';
-    if (totalPoints >= 500) level = 'Senior';
-    else if (totalPoints >= 200) level = 'Mid';
 
-    await POOL.query(
-      `INSERT INTO user_stats (user_id, points, level) 
-       VALUES ($1, $2, $3) 
-       ON CONFLICT (user_id) 
-       DO UPDATE SET points = $2, level = $3`,
-      [userId, totalPoints, level],
+    if (totalPoints >= 500) {
+      level = 'Senior';
+    } else if (totalPoints >= 200) {
+      level = 'Mid';
+    }
+
+    await pool.query(
+      `
+      INSERT INTO user_stats (user_id, points, level)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (user_id)
+      DO UPDATE
+      SET
+        points = EXCLUDED.points,
+        level = EXCLUDED.level
+      `,
+      [userId, totalPoints, level]
     );
 
-    return { totalPoints, level };
+    await checkAndAssignBadges(userId);
+
+    return {
+      totalSkills,
+      totalProjects,
+      totalHours,
+      totalPoints,
+      level,
+    };
   } catch (error) {
-    console.error('Error calculating statistics:', error);
+    console.error('Error calculating user statistics:', error);
     throw error;
   }
 };

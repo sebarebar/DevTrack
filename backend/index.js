@@ -1,7 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
 import authRoutes from './src/routes/auth.routes.js';
+import skillsRoutes from './src/routes/skills.routes.js';
+import projectsRoutes from './src/routes/projects.routes.js';
 
 dotenv.config();
 
@@ -12,12 +15,25 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
+// Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/skills', skillsRoutes);
+app.use('/api/projects', projectsRoutes);
 
+// Health check
 app.get('/', (req, res) => {
-  res.send('Hello from DEVTRACK...');
+  res.status(200).json({
+    message: 'DevTrack API is running.',
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Route not found.',
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`Running on port http://localhost:${PORT}`);
+  console.log(`🚀 DevTrack API running on http://localhost:${PORT}`);
 });
