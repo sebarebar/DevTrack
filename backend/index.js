@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authRoutes from './src/routes/auth.routes.js';
 import skillsRoutes from './src/routes/skills.routes.js';
 import projectsRoutes from './src/routes/projects.routes.js';
+import studyLogsRoutes from './src/routes/studyLogs.routes.js';
 
 
 dotenv.config();
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 3000;
 app.use('/api/auth', authRoutes);
 app.use('/api/skills', skillsRoutes);
 app.use('/api/projects', projectsRoutes);
+app.use('/api/study-logs', studyLogsRoutes);
 
 // Health check
 app.get('/', (req, res) => {
