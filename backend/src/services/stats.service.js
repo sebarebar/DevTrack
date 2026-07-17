@@ -1,4 +1,4 @@
-import pool from '../config/db.js';
+import pool from '../db.js';
 import { checkAndAssignBadges } from './badges.service.js';
 
 export const calculateStats = async (userId) => {
@@ -13,9 +13,11 @@ export const calculateStats = async (userId) => {
         [userId]
       ),
       pool.query(
-        `SELECT COALESCE(SUM(hours), 0) AS total
-         FROM study_logs
-         WHERE user_id = $1`,
+        `
+        SELECT COALESCE(SUM(hours),0) AS total
+        FROM study_logs
+        WHERE user_id = $1
+        `,
         [userId]
       ),
     ]);
@@ -29,25 +31,36 @@ export const calculateStats = async (userId) => {
       totalProjects * 50 +
       totalHours * 2;
 
-    let level = 'Junior';
+    let currentLevel = 'Junior';
 
     if (totalPoints >= 500) {
-      level = 'Senior';
+      currentLevel = 'Senior';
     } else if (totalPoints >= 200) {
-      level = 'Mid';
+      currentLevel = 'Mid';
     }
 
     await pool.query(
       `
-      INSERT INTO user_stats (user_id, points, level)
-      VALUES ($1, $2, $3)
+      INSERT INTO user_stats
+      (
+        user_id,
+        total_points,
+        current_level
+      )
+      VALUES ($1,$2,$3)
+
       ON CONFLICT (user_id)
-      DO UPDATE
-      SET
-        points = EXCLUDED.points,
-        level = EXCLUDED.level
+
+      DO UPDATE SET
+        total_points = EXCLUDED.total_points,
+        current_level = EXCLUDED.current_level,
+        updated_at = CURRENT_TIMESTAMP
       `,
-      [userId, totalPoints, level]
+      [
+        userId,
+        totalPoints,
+        currentLevel,
+      ]
     );
 
     await checkAndAssignBadges(userId);
@@ -57,10 +70,11 @@ export const calculateStats = async (userId) => {
       totalProjects,
       totalHours,
       totalPoints,
-      level,
+      currentLevel,
     };
+
   } catch (error) {
-    console.error('Error calculating user statistics:', error);
+    console.error('Error calculating stats:', error);
     throw error;
   }
 };

@@ -4,11 +4,13 @@ import { calculateStats } from '../services/stats.service.js';
 export const getProjects = async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT *
-        FROM projects
-        WHERE user_id = $1
-        ORDER BY created_at DESC`,
-      [req.user.userId]
+      `
+      SELECT *
+      FROM projects
+      WHERE user_id = $1
+      ORDER BY created_at DESC
+      `,
+      [req.user.id]
     );
 
     res.status(200).json(result.rows);
@@ -17,7 +19,7 @@ export const getProjects = async (req, res) => {
     console.error(error);
 
     res.status(500).json({
-      error: 'Internal server error'
+      error: 'Internal server error.',
     });
   }
 };
@@ -27,12 +29,13 @@ export const addProject = async (req, res) => {
   const {
     name,
     description,
-    url
+    github_url,
+    technologies,
   } = req.body;
 
   if (!name) {
     return res.status(400).json({
-      error: 'Project name is required.'
+      error: 'Project name is required.',
     });
   }
 
@@ -41,19 +44,26 @@ export const addProject = async (req, res) => {
     const result = await pool.query(
       `
       INSERT INTO projects
-      (user_id, name, description, url)
-      VALUES ($1,$2,$3,$4)
+      (
+        user_id,
+        name,
+        description,
+        github_url,
+        technologies
+      )
+      VALUES ($1,$2,$3,$4,$5)
       RETURNING *
       `,
       [
-        req.user.userId,
+        req.user.id,
         name,
         description,
-        url
+        github_url,
+        technologies,
       ]
     );
 
-    await calculateStats(req.user.userId);
+    await calculateStats(req.user.id);
 
     res.status(201).json(result.rows[0]);
 
@@ -62,7 +72,7 @@ export const addProject = async (req, res) => {
     console.error(error);
 
     res.status(500).json({
-      error: 'Internal server error'
+      error: 'Internal server error.',
     });
 
   }
@@ -82,20 +92,20 @@ export const deleteProject = async (req, res) => {
       `,
       [
         req.params.id,
-        req.user.userId
+        req.user.id,
       ]
     );
 
     if (result.rowCount === 0) {
       return res.status(404).json({
-        error: 'Project not found.'
+        error: 'Project not found.',
       });
     }
 
-    await calculateStats(req.user.userId);
+    await calculateStats(req.user.id);
 
-    res.json({
-      message: 'Project deleted successfully.'
+    res.status(200).json({
+      message: 'Project deleted successfully.',
     });
 
   } catch (error) {
@@ -103,7 +113,7 @@ export const deleteProject = async (req, res) => {
     console.error(error);
 
     res.status(500).json({
-      error: 'Internal server error'
+      error: 'Internal server error.',
     });
 
   }
@@ -120,33 +130,33 @@ export const getGithubRepos = async (req, res) => {
       `https://api.github.com/users/${username}/repos`,
       {
         headers: {
-          'User-Agent': 'DevTrack'
-        }
+          'User-Agent': 'DevTrack',
+        },
       }
     );
 
     if (!response.ok) {
       return res.status(404).json({
-        error: 'GitHub user not found.'
+        error: 'GitHub user not found.',
       });
     }
 
     const repositories = await response.json();
 
-    const repos = repositories.map(repo => ({
+    const repos = repositories.map((repo) => ({
       name: repo.name,
       description: repo.description,
-      url: repo.html_url
+      github_url: repo.html_url,
     }));
 
-    res.json(repos);
+    res.status(200).json(repos);
 
   } catch (error) {
 
     console.error(error);
 
     res.status(500).json({
-      error: 'Internal server error'
+      error: 'Internal server error.',
     });
 
   }
