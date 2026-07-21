@@ -81,3 +81,8 @@ The feature/auth branch establishes the programmatic perimeter for user verifica
 - User registration and login processing handlers.
 - Secure password hashing mechanisms prior to database storage.
 - JSON Web Token (JWT) issuance and validation middleware for protecting restricted API endpoints.
+
+
+
+
+Deployment configured with GitHub Pages.
