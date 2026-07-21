@@ -14,7 +14,7 @@ export function registerRoute(path, handler, options = {}) {
     regex: new RegExp(`^${pattern}$`),
     paramNames,
     handler,
-    isProtected: options.protected === true,
+    isProtected: options.protected === true,  
     guestOnly: options.guestOnly === true,
   });
 }

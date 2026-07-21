@@ -4,8 +4,8 @@ import { logout } from '../utils/auth.js';
 const NAV_ITEMS = [
   { path: '/dashboard', label: 'Dashboard' },
   { path: '/skills', label: 'Skills' },
-  { path: '/projects', label: 'Proyectos' },
-  { path: '/profile', label: 'Perfil' },
+  { path: '/projects', label: 'projects' },
+  { path: '/profile', label: 'profile' },
 ];
 
 // Renders the authenticated app shell (topbar + hero + content slot) into #app
