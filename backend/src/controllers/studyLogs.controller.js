@@ -34,6 +34,12 @@ export const addStudyLog = async (req, res) => {
         const userId = req.user.id;
         const { hours, log_date } = req.body;
 
+        if (hours < 0.5 || hours > 24) {
+    return res.status(400).json({
+        error: 'Las horas deben estar entre 0.5 y 24.'
+    });
+}
+
         if (!hours || !log_date) {
             return res.status(400).json({
                 error: 'Hours and log_date are required.',
@@ -42,11 +48,11 @@ export const addStudyLog = async (req, res) => {
 
         const exists = await pool.query(
             `
-      SELECT id
-      FROM study_logs
-      WHERE user_id = $1
-      AND log_date = $2
-      `,
+        SELECT id
+        FROM study_logs
+        WHERE user_id = $1
+        AND log_date = $2
+        `,
             [userId, log_date]
         );
 
