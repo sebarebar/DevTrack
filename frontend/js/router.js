@@ -1,10 +1,11 @@
 import { isAuthenticated } from './utils/auth.js';
 
-// GitHub Pages base path
-const BASE_PATH = '/DevTrack';
-
 // History API SPA router with route params and auth guards.
 const routes = [];
+
+// GitHub Pages repository base path
+const BASE_PATH = '/DevTrack';
+
 
 // registerRoute('/skills', handler, { protected: true })
 export function registerRoute(path, handler, options = {}) {
@@ -24,15 +25,6 @@ export function registerRoute(path, handler, options = {}) {
   });
 }
 
-function normalizePath(pathname) {
-  // Remove GitHub Pages base path (/DevTrack)
-  if (pathname.startsWith(BASE_PATH)) {
-    pathname = pathname.slice(BASE_PATH.length);
-  }
-
-  // Ensure root route is "/"
-  return pathname || '/';
-}
 
 function matchRoute(pathname) {
   for (const route of routes) {
@@ -52,8 +44,20 @@ function matchRoute(pathname) {
   return null;
 }
 
+
+function getAppPath() {
+  const pathname = location.pathname;
+
+  if (pathname.startsWith(BASE_PATH)) {
+    return pathname.slice(BASE_PATH.length) || '/';
+  }
+
+  return pathname;
+}
+
+
 export function navigateTo(path) {
-  const fullPath = BASE_PATH + path;
+  const fullPath = `${BASE_PATH}${path}`;
 
   if (fullPath === location.pathname) {
     return renderRoute();
@@ -63,52 +67,68 @@ export function navigateTo(path) {
   renderRoute();
 }
 
+
 async function renderRoute() {
   const app = document.getElementById('app');
 
-  // Normalize GitHub Pages URL
-  const pathname = normalizePath(location.pathname);
+  const pathname = getAppPath();
 
   const matched = matchRoute(pathname);
 
   if (!matched) {
-    app.innerHTML =
-      '<div class="page-loading"><h2 class="section-title">404</h2><p>Página no encontrada.</p></div>';
-
+    app.innerHTML = `
+      <div class="page-loading">
+        <h2 class="section-title">404</h2>
+        <p>Route not found.</p>
+      </div>
+    `;
     return;
   }
 
+
   const { route, params } = matched;
 
-  // Guards
+
+  // Protected routes
   if (route.isProtected && !isAuthenticated()) {
     return navigateTo('/login');
   }
 
+
+  // Guest only routes
   if (route.guestOnly && isAuthenticated()) {
     return navigateTo('/dashboard');
   }
 
+
   await route.handler(params, app);
 }
 
+
 export function initRouter() {
-  // Intercept in-app links marked with data-route.
+
+  // Intercept SPA links
   document.addEventListener('click', (event) => {
+
     const link = event.target.closest('[data-route]');
 
     if (!link) return;
+
 
     const href = link.getAttribute('href');
 
     if (!href) return;
 
+
     event.preventDefault();
 
     navigateTo(href);
+
   });
 
+
   window.addEventListener('popstate', renderRoute);
+
 
   renderRoute();
 }
