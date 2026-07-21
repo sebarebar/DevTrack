@@ -1,16 +1,22 @@
 // ================================================================
-// DevTrack — frontend configuration.
-// Single place to point the SPA at the backend.
-// - Local development uses localhost:3000.
-// - In production (GitHub Pages), set PRODUCTION_API_URL to the
-//   deployed backend on Render, e.g. 'https://devtrack-api.onrender.com/api'.
+// DevTrack — Frontend configuration.
+// Centralized API configuration.
+//
+// - During local development, the frontend connects to the local
+//   backend running on http://localhost:3000/api.
+//
+// - In production, replace PRODUCTION_API_URL with the public URL
+//   of the deployed Railway backend, for example:
+//   https://your-app.up.railway.app/api
+//
+// The application automatically switches between local and
+// production environments based on the current hostname.
 // ================================================================
-
 const LOCAL_API_URL = 'http://localhost:3000/api';
-const PRODUCTION_API_URL = 'https://YOUR-BACKEND.onrender.com/api';
+const PRODUCTION_API_URL = 'devtrack-production-e1d0.up.railway.app';
 
 const isLocalhost =
-  location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  location.hostname === 'localhost' || location.hostname === '127.0.0.1';   
 
 export const API_BASE_URL = isLocalhost ? LOCAL_API_URL : PRODUCTION_API_URL;
 
