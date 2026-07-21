@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>DevTrack</title>
-  <!--
-    GitHub Pages SPA fallback: any unknown path is served this file.
-    We rewrite it to index.html while preserving the original path so the
-    History API router can render the right view (e.g. /profile/:username).
-  -->
+
   <script>
-    sessionStorage.setItem('spa-redirect', location.pathname + location.search);
-    location.replace('/');
+    const path = window.location.pathname;
+
+    sessionStorage.setItem(
+      "spa-redirect",
+      path
+    );
+
+    window.location.replace(
+      "/DevTrack/"
+    );
   </script>
 </head>
-<body></body>
+
+<body>
+</body>
 </html>
