@@ -23,7 +23,7 @@ export function renderShell(app, { active, hero }) {
       <a href="/dashboard" data-route class="topbar-logo">dev<span>track</span></a>
       <nav class="topbar-nav">
         ${tabs}
-        <button id="logout-btn" class="nav-tab" title="Cerrar sesión">Salir</button>
+        <button id="logout-btn" class="nav-tab" title="Cerrar sesión">Sign out </button>
       </nav>
     </header>
 
