@@ -1,6 +1,6 @@
 // Maps the DB skill level (basic | intermediate | advanced) to visuals.
 export const LEVELS = [
-  { value: 'basic', label: 'Básico', order: 1, width: 33 },
+  { value: 'basic', label: 'Basico', order: 1, width: 33 },
   { value: 'intermediate', label: 'Intermedio', order: 2, width: 66 },
   { value: 'advanced', label: 'Avanzado', order: 3, width: 100 },
 ];

@@ -134,3 +134,39 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+// GET /api/auth/me
+export const getMe = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const result = await pool.query(
+      `SELECT
+        u.id,
+        u.username,
+        u.full_name,
+        u.email,
+        u.role,
+        u.avatar_url,
+        u.github_username,
+        COALESCE(us.total_points, 0) AS total_points,
+        COALESCE(us.current_level, 'Junior') AS current_level,
+        COALESCE(us.current_streak, 0) AS current_streak,
+        COALESCE(us.longest_streak, 0) AS longest_streak
+      FROM users u
+      LEFT JOIN user_stats us ON us.user_id = u.id
+      WHERE u.id = $1`,
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.status(200).json(result.rows[0]);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};

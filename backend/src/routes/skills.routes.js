@@ -7,9 +7,13 @@ import {
     addSkill,
     updateSkill,
     deleteSkill,
+    getSkillsCatalog,
 } from '../controllers/skills.controller.js';
 
 const router = Router();
+
+// GET catalog (all skills + categories)
+router.get('/catalog', authenticateToken, getSkillsCatalog);
 
 // GET all user skills
 router.get('/', authenticateToken, getSkills);

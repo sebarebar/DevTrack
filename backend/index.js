@@ -6,7 +6,8 @@ import authRoutes from './src/routes/auth.routes.js';
 import skillsRoutes from './src/routes/skills.routes.js';
 import projectsRoutes from './src/routes/projects.routes.js';
 import studyLogsRoutes from './src/routes/studyLogs.routes.js';
-
+import badgesRoutes from './src/routes/badges.routes.js';
+import profileRoutes from './src/routes/profile.routes.js';
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/skills', skillsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/study-logs', studyLogsRoutes);
+app.use('/api/badges', badgesRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Health check
 app.get('/', (req, res) => {

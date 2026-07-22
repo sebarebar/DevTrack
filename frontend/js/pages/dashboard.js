@@ -231,16 +231,18 @@ function paintLogs(logs) {
 
 async function onAddLog(event, app) {
   event.preventDefault();
-  
+
+  const btn = event.target.querySelector('button[type="submit"]');
+  if (btn.disabled) return;
+  btn.disabled = true;
+
   const values = Object.fromEntries(new FormData(event.target).entries());
-  
+
   const hours = Number(values.hours);
-  
+
   if (hours < 0.5 || hours > 24) {
-    toast(
-      'You can only register between 0.5 and 24 hours per day.',
-      'error'
-    );
+    toast('You can only register between 0.5 and 24 hours per day.', 'error');
+    btn.disabled = false;
     return;
   }
 
@@ -253,6 +255,9 @@ async function onAddLog(event, app) {
     await renderDashboard({}, app);
   } catch (error) {
     toast(error.message, 'error');
+  } finally {
+    const btn2 = document.querySelector('#log-form button[type="submit"]');
+    if (btn2) btn2.disabled = false;
   }
 }
 

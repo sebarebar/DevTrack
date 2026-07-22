@@ -9,6 +9,7 @@ const PRODUCTION_API_URL =
   'https://devtrack-production-e1d0.up.railway.app/api';
 
 const isLocalhost =
+  location.protocol === 'file:' ||
   location.hostname === 'localhost' ||
   location.hostname === '127.0.0.1';
 

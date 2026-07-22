@@ -1,6 +1,23 @@
 import pool from '../db.js';
 import { calculateStats } from '../services/stats.service.js';
 
+// GET /api/skills/catalog
+export const getSkillsCatalog = async (req, res) => {
+    try {
+        const [skills, categories] = await Promise.all([
+            pool.query('SELECT id, name, category_id FROM skills ORDER BY name'),
+            pool.query('SELECT id, name FROM skill_categories ORDER BY name'),
+        ]);
+        res.status(200).json({
+            skills: skills.rows,
+            categories: categories.rows,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error.' });
+    }
+};
+
 // GET /api/skills
 export const getSkills = async (req, res) => {
     try {
@@ -40,22 +57,34 @@ export const getSkills = async (req, res) => {
 export const addSkill = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { skill_id, level } = req.body;
+        const { name, category_id, level } = req.body;
 
-        if (!skill_id || !level) {
+        if (!name || !category_id || !level) {
             return res.status(400).json({
-                error: 'skill_id and level are required.',
+                error: 'name, category_id, and level are required.',
             });
         }
 
+        // Look up or create the skill record
+        let skillResult = await pool.query(
+            `SELECT id FROM skills WHERE name = $1`,
+            [name]
+        );
+
+        let skillId;
+        if (skillResult.rows.length > 0) {
+            skillId = skillResult.rows[0].id;
+        } else {
+            const newSkill = await pool.query(
+                `INSERT INTO skills (name, category_id) VALUES ($1, $2) RETURNING id`,
+                [name, category_id]
+            );
+            skillId = newSkill.rows[0].id;
+        }
+
         const exists = await pool.query(
-            `
-      SELECT id
-      FROM user_skills
-      WHERE user_id = $1
-      AND skill_id = $2
-      `,
-            [userId, skill_id]
+            `SELECT id FROM user_skills WHERE user_id = $1 AND skill_id = $2`,
+            [userId, skillId]
         );
 
         if (exists.rows.length > 0) {
@@ -65,13 +94,8 @@ export const addSkill = async (req, res) => {
         }
 
         const result = await pool.query(
-            `
-      INSERT INTO user_skills
-      (user_id, skill_id, level)
-      VALUES ($1, $2, $3)
-      RETURNING *
-      `,
-            [userId, skill_id, level]
+            `INSERT INTO user_skills (user_id, skill_id, level) VALUES ($1, $2, $3) RETURNING *`,
+            [userId, skillId, level]
         );
 
         await calculateStats(userId);

@@ -408,49 +408,32 @@ function paint() {
 
 
 async function onAdd(event) {
-
   event.preventDefault();
 
-
   const form = event.target;
+  const btn = form.querySelector('button[type="submit"]');
+  if (btn.disabled) return;
+  btn.disabled = true;
 
-  const values = Object.fromEntries(
-    new FormData(form).entries()
-  );
+  const values = Object.fromEntries(new FormData(form).entries());
 
-
-  if (!values.name.trim()) return;
-
-
+  if (!values.name.trim()) { btn.disabled = false; return; }
 
   try {
-
     await api.post('/skills', {
-
       name: values.name.trim(),
-
       category_id: Number(values.category_id),
-
       level: values.level,
-
     });
 
-
     toast('Skill added.', 'success');
-
-
     form.reset();
-
-
     await reload();
-
-
   } catch (error) {
-
     toast(error.message, 'error');
-
+  } finally {
+    btn.disabled = false;
   }
-
 }
 
 
