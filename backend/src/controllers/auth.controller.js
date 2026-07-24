@@ -57,6 +57,7 @@ export const registerUser = async (req, res) => {
       user: result.rows[0],
     });
 
+    
   } catch (error) {
     console.error('Register Error:', error);
 
