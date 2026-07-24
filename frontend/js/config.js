@@ -6,7 +6,7 @@
 const LOCAL_API_URL = 'http://localhost:3000/api';
 
 const PRODUCTION_API_URL =
-  'https://devtrack-production-e1d0.up.railway.app/api';
+  'devtrack-production-107a.up.railway.app';
 
 const isLocalhost =
   location.protocol === 'file:' ||
