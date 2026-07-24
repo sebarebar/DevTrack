@@ -3,8 +3,15 @@ import { isAuthenticated } from './utils/auth.js';
 // History API SPA router with route params and auth guards.
 const routes = [];
 
-// GitHub Pages repository base path
-const BASE_PATH = '/DevTrack';
+// Detect base path: empty for local dev, /repo-name for GitHub Pages
+function detectBasePath() {
+  if (location.hostname.indexOf('github.io') !== -1) {
+    var parts = location.pathname.split('/');
+    return '/' + parts[1];
+  }
+  return '';
+}
+const BASE_PATH = detectBasePath();
 
 
 // registerRoute('/skills', handler, { protected: true })

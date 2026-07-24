@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevTrack</title>
-
   <script>
-    const path = window.location.pathname;
-
-    sessionStorage.setItem(
-      "spa-redirect",
-      path
-    );
-
-    window.location.replace(
-      "/DevTrack/"
-    );
+    sessionStorage.setItem('spa-redirect', location.pathname + location.search + location.hash);
+    var isPages = location.hostname.indexOf('github.io') !== -1;
+    if (isPages) {
+      var parts = location.pathname.split('/');
+      location.replace('/' + parts[1] + '/');
+    } else {
+      location.replace('/');
+    }
   </script>
 </head>
-
-<body>
-</body>
+<body></body>
 </html>

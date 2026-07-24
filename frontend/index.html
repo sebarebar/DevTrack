@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>DevTrack</title>
-
-    <meta name="description" content=“DevTrack: Track your skills, projects, and study hours as a developer.”>
-
-    <link rel="icon" href="/assets/favicon.svg">
-
-    <link rel="stylesheet" href="/css/styles.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-
+  <script>
+    (function(){
+      var base = document.createElement('base');
+      var isPages = location.hostname.indexOf('github.io') !== -1;
+      if (isPages) {
+        var parts = location.pathname.split('/');
+        base.href = '/' + parts[1] + '/';
+      } else {
+        base.href = '/';
+      }
+      document.head.prepend(base);
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevTrack</title>
+  <meta name="description" content="DevTrack: Track your skills, projects, and study hours as a developer.">
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 </head>
-
-
 <body>
-
-
-    <div id="app"></div>
-
-    <div id="toast-root"></div>
-
-    <script type="module" src="/js/app.js"></script>
-
+  <div id="app"></div>
+  <div id="toast-root"></div>
+  <script type="module" src="js/app.js"></script>
 </body>
-
 </html>
